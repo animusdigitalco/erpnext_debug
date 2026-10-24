@@ -13,6 +13,11 @@ app_license = "MIT"
 app_include_js = "/assets/erpnext_debug/js/erpnext_debug.js"
 app_include_css = "/assets/erpnext_debug/css/erpnext_debug.css"
 
+# Portal and website pages (web forms, customer portal). The same script runs
+# in a lighter mode there: it stays silent for guests and non-System-Managers.
+web_include_js = "/assets/erpnext_debug/js/erpnext_debug.js"
+web_include_css = "/assets/erpnext_debug/css/erpnext_debug.css"
+
 # Tell the Desk whether tracing is on so the overlay knows to start.
 boot_session = "erpnext_debug.tracer.core.boot_session"
 

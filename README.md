@@ -42,6 +42,26 @@ install, so nothing is recorded until someone turns it on.
 - **⤢** opens the same list as a full Desk page (`/app/debug-traces`).
 - Background jobs are traced too and tagged `job`.
 
+### Browser side
+
+- **Client scripts.** Every `frappe.ui.form.on` handler is timed and
+  attributed to the app file it came from (`erpnext / sales_invoice.js`,
+  `kingsway / sales_invoice.js`) or to the **Client Script** record by name,
+  with a link to open it. When a save goes to the server, the handlers that
+  ran just before it (`validate`, `before_save`) appear in the same row under
+  a **Browser** heading, above the server events. A handler that throws, or
+  one that sets `frappe.validated = false` and blocks the save, gets its own
+  row even though no request was made.
+- **JS errors.** Uncaught exceptions and unhandled promise rejections show
+  up as rows with the stack trace and the app that owns the file.
+- **Portal pages.** The same panel loads on website and portal pages (web
+  forms, customer portal) for logged-in System Managers, so a failing web
+  form submit can be read on the page itself. Guests and other users never
+  load anything beyond the script tag.
+
+Browser-side rows live in the page's memory and are gone on reload; server
+traces persist in Redis.
+
 ## How it works
 
 - `before_request` installs runtime wrappers (once per worker) around
@@ -55,6 +75,9 @@ install, so nothing is recorded until someone turns it on.
   rolls back the database transaction and would take the trace with it.
 - The Desk script watches `ajaxComplete` and `fetch`, sees the header, and
   pulls the trace into the panel.
+- `frappe.ui.form.on` is wrapped at load. Frappe evaluates form scripts with
+  a `sourceURL` and per-file markers, so the stack at registration time maps
+  each handler back to its file or Client Script record.
 
 Traces expire after 6 hours and the index keeps the last 500.
 
@@ -91,6 +114,7 @@ v14 and v15; v16 is expected to work but is not yet verified.
 - Permission explainer: why a user can or cannot see a record
 - Hook conflict report across installed apps
 - Scheduler event traces
+- Persist browser-side rows so they survive a reload
 
 ## License
 

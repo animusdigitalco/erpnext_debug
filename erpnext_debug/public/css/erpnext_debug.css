@@ -9,6 +9,8 @@
 	--edbg-ok: var(--green-500, #2f9e5f);
 	--edbg-err: var(--red-500, #e03e2d);
 	--edbg-err-bg: var(--red-50, #fff3f2);
+	--edbg-warn: var(--yellow-500, #d9a400);
+	--edbg-warn-bg: var(--yellow-50, #fff9e6);
 	--edbg-accent: var(--primary, #2490ef);
 	--edbg-mono: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
 	--edbg-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
@@ -365,6 +367,62 @@
 	font-family: var(--edbg-mono);
 	font-size: 11px;
 	line-height: 1.45;
+}
+
+/* Warnings (client script blocked a save) */
+.edbg-warn > .edbg-row-head .edbg-dot,
+.edbg-step.edbg-warn .edbg-dot {
+	background: var(--edbg-warn);
+}
+.edbg-row.edbg-warn .edbg-row-error {
+	background: var(--edbg-warn-bg);
+	color: var(--edbg-text);
+}
+.edbg-step.edbg-warn {
+	background: var(--edbg-warn-bg);
+}
+.edbg-badge-warn {
+	background: var(--edbg-warn-bg);
+	color: var(--edbg-text);
+	border: 1px solid var(--edbg-warn);
+	text-transform: none;
+	letter-spacing: 0;
+	font-family: var(--edbg-mono);
+}
+.edbg-badge-browser {
+	border: 1px solid var(--edbg-border);
+}
+
+/* Browser / server sections inside a trace */
+.edbg-section-title {
+	margin: 8px 0 4px 0;
+	font-size: 10.5px;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--edbg-muted);
+}
+.edbg-client-events {
+	border-left: 2px solid var(--edbg-border);
+	padding-left: 10px;
+	margin-bottom: 6px;
+}
+.edbg-client-events .edbg-step,
+.edbg-local .edbg-step {
+	padding-left: 0;
+}
+.edbg-app-client-script {
+	border-color: var(--edbg-accent);
+	color: var(--edbg-accent);
+}
+.edbg-open-record {
+	cursor: pointer;
+	text-decoration: underline dotted;
+}
+
+/* Portal pages have no Desk layout; keep the panel above page footers. */
+.edbg-mode-web {
+	z-index: 10000;
+	font-family: var(--font-stack, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
 }
 
 /* Full page variant */

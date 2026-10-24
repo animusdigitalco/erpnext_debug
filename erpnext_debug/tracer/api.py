@@ -34,6 +34,21 @@ def _summary(trace: dict) -> dict:
 
 
 @frappe.whitelist()
+def portal_status():
+	"""Called from portal / website pages, where there is no boot info.
+	Never throws: returns allowed=False instead so the page stays quiet."""
+	from erpnext_debug.erpnext_debug.doctype.erpnext_debug_settings.erpnext_debug_settings import get_settings
+
+	allowed = frappe.session.user != "Guest" and "System Manager" in frappe.get_roles()
+	settings = get_settings()
+	return {
+		"enabled": bool(allowed and is_enabled()),
+		"allowed": allowed,
+		"open_on_error": bool(settings.get("open_on_error", 1)),
+	}
+
+
+@frappe.whitelist()
 def status():
 	_guard()
 	return {
