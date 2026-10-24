@@ -33,7 +33,8 @@ frappe.pages["debug-traces"].on_page_load = function (wrapper) {
 		if (!s.enabled) {
 			page.body.prepend(
 				`<div class="alert alert-warning">${__(
-					"Tracing is disabled on this site (erpnext_debug_disabled in site_config.json). Existing traces are still shown until they expire."
+					"Tracing is off. Turn it on in {0}. Existing traces are still shown until they expire.",
+					[`<a href="/app/erpnext-debug-settings">${__("ERPNext Debug Settings")}</a>`]
 				)}</div>`
 			);
 		}

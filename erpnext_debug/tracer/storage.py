@@ -23,12 +23,24 @@ def cache():
 	return c
 
 
+def _settings() -> dict:
+	from erpnext_debug.erpnext_debug.doctype.erpnext_debug_settings.erpnext_debug_settings import get_settings
+
+	return get_settings()
+
+
 def ttl_seconds() -> int:
-	return int(frappe.conf.get("erpnext_debug_ttl") or DEFAULT_TTL_SECONDS)
+	# site_config wins if set, otherwise the Settings form, otherwise the default.
+	if frappe.conf.get("erpnext_debug_ttl"):
+		return int(frappe.conf.get("erpnext_debug_ttl"))
+	hours = _settings().get("ttl_hours")
+	return int(hours) * 3600 if hours else DEFAULT_TTL_SECONDS
 
 
 def max_traces() -> int:
-	return int(frappe.conf.get("erpnext_debug_max_traces") or DEFAULT_MAX_TRACES)
+	if frappe.conf.get("erpnext_debug_max_traces"):
+		return int(frappe.conf.get("erpnext_debug_max_traces"))
+	return int(_settings().get("max_traces") or DEFAULT_MAX_TRACES)
 
 
 def save_trace(trace: dict) -> None:

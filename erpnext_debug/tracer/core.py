@@ -41,18 +41,25 @@ _orig_execute_doc = None
 
 
 def is_enabled() -> bool:
-	"""Tracing is on unless the site config turns it off.
-
-	This app is meant for staging and local benches, so the default is on.
-	Set ``erpnext_debug_disabled: 1`` in site_config.json to turn it off.
+	"""Tracing is on when a System Manager has turned it on in
+	ERPNext Debug Settings. ``erpnext_debug_disabled: 1`` in site_config.json
+	is a hard off switch that overrides the form.
 	"""
-	return not frappe.conf.get("erpnext_debug_disabled")
+	if frappe.conf.get("erpnext_debug_disabled"):
+		return False
+	from erpnext_debug.erpnext_debug.doctype.erpnext_debug_settings.erpnext_debug_settings import get_settings
+
+	return bool(get_settings().get("enabled"))
 
 
 def boot_session(bootinfo):
 	if "System Manager" in frappe.get_roles():
+		from erpnext_debug.erpnext_debug.doctype.erpnext_debug_settings.erpnext_debug_settings import get_settings
+
+		settings = get_settings()
 		bootinfo.erpnext_debug = {
 			"enabled": is_enabled(),
+			"open_on_error": bool(settings.get("open_on_error", 1)),
 			"ttl": storage.ttl_seconds(),
 			"header": HEADER,
 		}

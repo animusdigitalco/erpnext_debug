@@ -1,0 +1,86 @@
+{
+ "actions": [],
+ "creation": "2026-10-24 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "open_on_error",
+  "column_break_1",
+  "ttl_hours",
+  "max_traces",
+  "section_notes",
+  "notes"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "description": "Record the hook chain for every request and show the Debug panel to System Managers.",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable tracing"
+  },
+  {
+   "default": "1",
+   "depends_on": "enabled",
+   "description": "Default for new users. Each user can change it in the panel.",
+   "fieldname": "open_on_error",
+   "fieldtype": "Check",
+   "label": "Open panel automatically on errors"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "6",
+   "depends_on": "enabled",
+   "description": "How long a trace is kept before Redis expires it.",
+   "fieldname": "ttl_hours",
+   "fieldtype": "Int",
+   "label": "Keep traces for (hours)",
+   "non_negative": 1
+  },
+  {
+   "default": "500",
+   "depends_on": "enabled",
+   "description": "Oldest traces are dropped past this count.",
+   "fieldname": "max_traces",
+   "fieldtype": "Int",
+   "label": "Maximum traces kept",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "section_notes",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "HTML",
+   "options": "<p class=\"text-muted\">Only users with the <b>System Manager</b> role see the panel or can read traces. Meant for staging and local benches. <code>erpnext_debug_disabled: 1</code> in site_config.json overrides this form and turns tracing off.</p>"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-24 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "ERPNext Debug",
+ "name": "ERPNext Debug Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

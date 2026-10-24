@@ -24,7 +24,10 @@ bench build --app erpnext_debug
 bench restart
 ```
 
-Log in as a System Manager. A small **Debug** pill appears bottom-right.
+Then, as a System Manager, open **ERPNext Debug Settings** (search bar, or
+`/app/erpnext-debug-settings`), tick **Enable tracing** and save. Reload and
+a small **Debug** pill appears bottom-right. Tracing is off by default after
+install, so nothing is recorded until someone turns it on.
 
 ## Using it
 
@@ -55,13 +58,24 @@ Log in as a System Manager. A small **Debug** pill appears bottom-right.
 
 Traces expire after 6 hours and the index keeps the last 500.
 
-## Configuration (site_config.json)
+## Configuration
 
-| key | default | meaning |
+**ERPNext Debug Settings** (a Single DocType, System Manager only):
+
+| field | default | meaning |
 | --- | --- | --- |
-| `erpnext_debug_disabled` | `0` | Set to `1` to stop tracing on this site |
-| `erpnext_debug_ttl` | `21600` | Seconds a trace is kept |
-| `erpnext_debug_max_traces` | `500` | How many traces the index keeps |
+| Enable tracing | off | Master switch. Nothing is recorded or shown while off |
+| Open panel automatically on errors | on | Default for new users; each user can change it in the panel |
+| Keep traces for (hours) | 6 | Redis TTL per trace |
+| Maximum traces kept | 500 | Oldest are dropped past this |
+
+**site_config.json** overrides, for benches you manage by config:
+
+| key | meaning |
+| --- | --- |
+| `erpnext_debug_disabled: 1` | Hard off switch. Wins over the Settings form |
+| `erpnext_debug_ttl` | Seconds a trace is kept. Wins over the form |
+| `erpnext_debug_max_traces` | Index size. Wins over the form |
 
 Only users with the **System Manager** role see the panel or can call the
 API. Traces contain document names and error messages, so treat them like

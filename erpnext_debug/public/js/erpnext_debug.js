@@ -317,8 +317,15 @@ frappe.provide("erpnext_debug");
 
 	erpnext_debug.Panel = class Panel {
 		constructor() {
+			const boot = (frappe.boot && frappe.boot.erpnext_debug) || {};
 			this.state = Object.assign(
-				{ open: false, height: 320, errors_only: false, auto_open: true, paused: false },
+				{
+					open: false,
+					height: 320,
+					errors_only: false,
+					auto_open: boot.open_on_error !== false,
+					paused: false,
+				},
 				load_state()
 			);
 			this.seen = new Set();
@@ -347,6 +354,7 @@ frappe.provide("erpnext_debug");
 						<label class="edbg-toggle"><input type="checkbox" data-opt="errors_only"> ${__("Errors only")}</label>
 						<label class="edbg-toggle"><input type="checkbox" data-opt="auto_open"> ${__("Open on error")}</label>
 						<label class="edbg-toggle"><input type="checkbox" data-opt="paused"> ${__("Pause")}</label>
+						<button class="edbg-btn" data-action="settings" title="${__("Settings")}">⚙</button>
 						<button class="edbg-btn" data-action="page" title="${__("Open full page")}">⤢</button>
 						<button class="edbg-btn" data-action="refresh" title="${__("Reload")}">↻</button>
 						<button class="edbg-btn" data-action="clear" title="${__("Clear all traces")}">${__("Clear")}</button>
@@ -370,6 +378,7 @@ frappe.provide("erpnext_debug");
 				if (action === "clear") this.view.clear();
 				if (action === "refresh") this.view.refresh();
 				if (action === "page") frappe.set_route("debug-traces");
+				if (action === "settings") frappe.set_route("Form", "ERPNext Debug Settings");
 			});
 			this.$panel.on("change", "input[data-opt]", (e) => {
 				const opt = $(e.currentTarget).data("opt");
