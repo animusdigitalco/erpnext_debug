@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.DS_Store
+node_modules/
+erpnext_debug/public/dist/
+.vscode/
+.idea/
