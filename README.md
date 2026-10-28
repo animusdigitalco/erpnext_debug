@@ -46,7 +46,7 @@ install, so nothing is recorded until someone turns it on.
 
 - **Client scripts.** Every `frappe.ui.form.on` handler is timed and
   attributed to the app file it came from (`erpnext / sales_invoice.js`,
-  `kingsway / sales_invoice.js`) or to the **Client Script** record by name,
+  `your_app / sales_invoice.js`) or to the **Client Script** record by name,
   with a link to open it. When a save goes to the server, the handlers that
   ran just before it (`validate`, `before_save`) appear in the same row under
   a **Browser** heading, above the server events. A handler that throws, or
